@@ -5,7 +5,6 @@ import {
 	readUserController,
 	updateUserController,
 	deleteUserController,
-	loginUserController,
 } from '../controllers/users.controller';
 
 import { ensureAuthMiddleware } from '../middlewares/ensureAuth.middleware';
@@ -13,10 +12,19 @@ import { ensureIsAdmMiddleware } from '../middlewares/ensureIsAdm.middleware';
 
 const userRouter = Router();
 
-userRouter.post('/users', createUserController);
-userRouter.post('/login', loginUserController);
-userRouter.get('/users', ensureAuthMiddleware,ensureIsAdmMiddleware,readUserController);
-userRouter.patch('/users/:id', ensureAuthMiddleware,updateUserController);
-userRouter.delete('/users/:id',ensureAuthMiddleware,ensureIsAdmMiddleware, deleteUserController);
+userRouter.post('', createUserController);
+userRouter.get(
+	'',
+	ensureAuthMiddleware,
+	ensureIsAdmMiddleware,
+	readUserController,
+);
+userRouter.patch('/:id', ensureAuthMiddleware, updateUserController);
+userRouter.delete(
+	'/:id',
+	ensureAuthMiddleware,
+	ensureIsAdmMiddleware,
+	deleteUserController,
+);
 
 export default userRouter;

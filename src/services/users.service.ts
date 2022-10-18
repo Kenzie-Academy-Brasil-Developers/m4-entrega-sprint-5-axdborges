@@ -1,4 +1,5 @@
 import AppDataSource from '../data-source';
+
 import { User } from '../entities/users.entities';
 import { AppError } from '../errors/AppError';
 import 'dotenv/config';
