@@ -3,7 +3,11 @@ import { Request, Response } from 'express';
 import { ICategoryRequest } from '../interfaces/categories';
 import { instanceToPlain } from 'class-transformer';
 
-import { createCategoryService, readCategoriesService } from '../services/categories.service';
+import {
+	createCategoryService,
+	readCategoriesService,
+	readPropertiesPerCategoryIdService,
+} from '../services/categories.service';
 
 export const createCategoryController = async (
 	request: Request,
@@ -20,4 +24,13 @@ export const readCategoriesController = async (
 ) => {
 	const categories = await readCategoriesService();
 	return response.status(200).json(instanceToPlain(categories));
+};
+
+export const readPropertiesPerCategoryIdController = async (
+	request: Request,
+	response: Response,
+) => {
+    const {id} = request.params
+	const read = await readPropertiesPerCategoryIdService(id);
+	return response.json(read);
 };

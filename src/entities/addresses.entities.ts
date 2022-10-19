@@ -12,12 +12,12 @@ export class Addresses {
 	readonly id: string;
 	@Column({ length: 80 })
 	district: string;
-	@Column({ length: 60 })
+	@Column({ length: 8 })
 	zipCode: string;
 	@Column({ length: 80, nullable: true })
 	number: string;
 	@Column({ length: 60 })
 	city: string;
-	@Column({ length: 60 })
+	@Column({ length: 2 })
 	state: string;
 }

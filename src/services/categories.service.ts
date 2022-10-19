@@ -1,6 +1,7 @@
 import AppDataSource from '../data-source';
 
 import { Categories } from '../entities/categories.entities';
+import { Properties } from '../entities/properties.entities';
 import { ICategoryRequest } from '../interfaces/categories';
 
 import { AppError } from '../errors/AppError';
@@ -30,4 +31,27 @@ export const readCategoriesService = async () => {
 	const categoriesRepository = AppDataSource.getRepository(Categories);
 	const categories = await categoriesRepository.find();
 	return categories;
+};
+
+export const readPropertiesPerCategoryIdService = async (id: string) => {
+	const categoryRepository = AppDataSource.getRepository(Categories);
+	const propertyRepository = AppDataSource.getRepository(Properties);
+
+	const category = await categoryRepository.findOne({
+		where: {
+			id: id,
+		},
+	});
+    
+    if(!category){
+        throw new AppError(404, 'Category not found')
+    }
+	const readProperties = await propertyRepository.find({
+		where: {
+			category,
+		},
+		
+	});
+    
+	return readProperties;
 };

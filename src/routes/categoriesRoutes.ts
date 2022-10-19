@@ -6,6 +6,7 @@ import { ensureAuthMiddleware } from '../middlewares/ensureAuth.middleware';
 import {
 	createCategoryController,
 	readCategoriesController,
+    readPropertiesPerCategoryIdController,
 } from '../controllers/categories.controller';
 
 const categoryRouter = Router();
@@ -17,6 +18,6 @@ categoryRouter.post(
 	createCategoryController,
 );
 categoryRouter.get('', readCategoriesController);
-categoryRouter.get('/:id/properties');
+categoryRouter.get('/:id/properties', readPropertiesPerCategoryIdController);
 
-export default categoryRouter;|
+export default categoryRouter;

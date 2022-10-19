@@ -18,7 +18,7 @@ import { SchedulesUsersProperties } from './schedulesUsersProperties.entities';
 export class Properties {
 	@PrimaryGeneratedColumn('uuid')
 	readonly id: string;
-	@Column({ default: true })
+	@Column({ default: false })
 	sold: boolean;
 	@Column()
 	value: number;
@@ -31,7 +31,7 @@ export class Properties {
 	@OneToOne(() => Addresses, { eager: true })
 	@JoinColumn()
 	address: Addresses;
-	@ManyToOne(() => Categories)
+	@ManyToOne(() => Categories, { eager: true })
 	category: Categories;
 	@OneToMany(() => SchedulesUsersProperties, (schedules) => schedules.property)
 	@JoinColumn()
