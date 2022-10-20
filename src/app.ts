@@ -18,7 +18,7 @@ app.use('/users', userRouter)
 app.use('/login', sessionRouter)
 app.use('/categories', categoryRouter)
 app.use('/properties', propertiesRouter)
-app.use('schedules', schedulesRouter)
+app.use('/schedules', schedulesRouter)
 
 app.use(handleErrorMiddleware)
 

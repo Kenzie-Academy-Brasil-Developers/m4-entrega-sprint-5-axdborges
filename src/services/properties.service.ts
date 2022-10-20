@@ -28,7 +28,7 @@ export const createPropertyService = async (
 		zipCode: address.zipCode,
 	});
 	if (addressAlreadyExists) {
-		throw new AppError(401, 'This address is already registered');
+		throw new AppError(400, 'This address is already registered');
 	}
 
 	const IsCategoryExists = await categoryRepository.findOneBy({

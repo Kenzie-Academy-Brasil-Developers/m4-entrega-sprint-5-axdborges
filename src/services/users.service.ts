@@ -142,10 +142,10 @@ export const loginUserService = async (user: IUserLogin): Promise<string> => {
 	if (findUser) {
 		const hashedPassword = bcrypt.compareSync(user.password, findUser.password);
 		if (!hashedPassword) {
-			throw new AppError(400, 'email ou senha inválidos');
+			throw new AppError(403, 'email ou senha inválidos');
 		}
 	} else {
-		throw new AppError(400, 'email ou senha inválidos');
+		throw new AppError(403, 'email ou senha inválidos');
 	}
 
 	const token = jwt.sign(
