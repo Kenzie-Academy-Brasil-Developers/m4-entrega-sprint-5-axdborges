@@ -14,7 +14,7 @@ export const createSchedulesController = async (
 ) => {
 	const schedule: IScheduleRequest = request.body;
 	const newSchedule = await createSchedulesService(schedule);
-	return response.json({message: newSchedule});
+	return response.status(201).json({message: newSchedule});
 };
 
 export const readPropertySchedulesController = async (
@@ -23,5 +23,5 @@ export const readPropertySchedulesController = async (
 ) => {
 	const { id } = request.params;
 	const schedules = await readPropertySchedulesService(id);
-	return response.json(schedules);
+	return response.json({schedules});
 };

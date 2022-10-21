@@ -35,6 +35,8 @@ describe("/schedules", () => {
         mockedSchedule.propertyId = properties.body[0].id
         mockedSchedule.userId = users.body[1].id
         const response = await request(app).post('/schedules').set("Authorization", `Bearer ${userLoginResponse.body.token}`).send(mockedSchedule)
+        console.log('console erro',mockedSchedule);
+        
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(201)
@@ -62,6 +64,8 @@ describe("/schedules", () => {
         mockedScheduleInvalidDate.userId = users.body[1].id
         const response = await request(app).post('/schedules').set("Authorization", `Bearer ${userLoginResponse.body.token}`).send(mockedScheduleInvalidDate)
 
+        console.log(mockedScheduleInvalidDate);
+        
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
     })
@@ -87,7 +91,7 @@ describe("/schedules", () => {
         mockedScheduleInvalidHourMore18.propertyId = properties.body[0].id
         mockedScheduleInvalidHourMore18.userId = users.body[1].id
         const response = await request(app).post('/schedules').set("Authorization", `Bearer ${userLoginResponse.body.token}`).send(mockedScheduleInvalidHourMore18)
-
+        
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
     })

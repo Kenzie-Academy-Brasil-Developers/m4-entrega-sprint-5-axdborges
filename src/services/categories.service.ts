@@ -52,6 +52,12 @@ export const readPropertiesPerCategoryIdService = async (id: string) => {
 		},
 		
 	});
+
+    const response = {
+        id: category.id,
+        name: category.name,
+        properties: readProperties,
+    }
     
-	return readProperties;
+	return response;
 };

@@ -30,42 +30,79 @@ export const createSchedulesService = async (data: IScheduleRequest) => {
 		throw new AppError(404, 'Property not found');
 	}
 
+    // if(data.date.includes('/')){
+    //     // throw new AppError(400, 'Invalid Date');
+    // }
+
 	if (data.date.length !== 10) {
 		throw new AppError(400, 'Invalid Date');
 	}
 
+	let splitData = data.date.split('');
+	const arrayData: string[] = [];
+	splitData.forEach((elem) => {
+		if (elem != '/') {
+			arrayData.push(elem);
+		} else {
+			arrayData.push('-');
+		}
+	});
+	const editedData = arrayData.join('');
+
 	const completeDate = new Date(`${data.date}, ${data.hour}`);
-    if(!completeDate){
-        throw new AppError(400, 'Invalid date')
+
+
+	if (!completeDate) {
+		throw new AppError(400, 'Invalid date');
+	}
+    if(completeDate.getDay() == 0 || completeDate.getDay() == 6){
+        throw new AppError(400, 'Invalid Date')
     }
 
+
 	const hours = completeDate.getHours();
+    console.log(hours);
 
 	if (!hours) {
 		throw new AppError(400, 'Invalid Hour');
 	}
-	if (hours > 18 && hours < 8) {
+	if (hours >= 18) {
 		throw new AppError(400, 'Out of comertial time');
 	}
+    if (hours < 8) {
+		throw new AppError(400, 'Out of comertial time');
+	}
+    
 
-	const scheduleAlreadyCreated = await scheduleRepository.findBy({
-		date: data.date,
-		hour: data.hour,
-		property: propertyExists,
+	const scheduleAlreadyCreated = await scheduleRepository.find({
+        where: {
+            property: {
+                id: data.propertyId
+            },
+            date: editedData,
+            hour: data.hour,
+        },
+        relations: {
+            property: true
+        }
 	});
-	// if (scheduleAlreadyCreated) {
-	// 	throw new AppError(400, 'Schedule already exists in this property');
-	// }
+    
+	if (scheduleAlreadyCreated.length == 1) {
+		throw new AppError(400, 'Schedule already exists in this property');
+	}
 
 	console.log(!!scheduleAlreadyCreated);
+
 	const createSchedule = scheduleRepository.create({
 		...data,
+		date: editedData,
 	});
 	await scheduleRepository.save(createSchedule);
 
 	await scheduleRepository.update(createSchedule.id, {
 		property: propertyExists,
 		user: userExists,
+		date: editedData,
 	});
 
 	const scheduleCreated = await scheduleRepository.findOneBy({
@@ -90,9 +127,19 @@ export const readPropertySchedulesService = async (id: string) => {
 		throw new AppError(404, 'property not found');
 	}
 
-	const readSchedulesProperties = await schedulesRepository.findBy({
-		property,
+	const readSchedulesProperties = await schedulesRepository.find({
+        where: {
+            property: {
+                id,
+            }
+        }
 	});
+
+    const response = {
+        id: property.id,
+        schedules: readSchedulesProperties
+        
+    }
 
 	return readSchedulesProperties;
 };

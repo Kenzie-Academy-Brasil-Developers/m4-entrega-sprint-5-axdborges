@@ -86,7 +86,7 @@ describe("/properties", () => {
     test("POST /properties -  should not be able to create property with invalid categoryId",async () => { 
         const adminLoginResponse = await request(app).post("/login").send(mockedAdminLogin);
         const response = await request(app).post('/properties').set("Authorization", `Bearer ${adminLoginResponse.body.token}`).send(mockedPropertyInvalidCategoryId)
-
+       
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(404)
      

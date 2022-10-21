@@ -23,6 +23,13 @@ export const createPropertyService = async (
 	if (address.state.length > 2) {
 		throw new AppError(400, 'Invalid state');
 	}
+    
+    const IsCategoryExists = await categoryRepository.findOneBy({
+        id: property.categoryId,
+    });
+    if (!IsCategoryExists) {
+        throw new AppError(404, 'This property category does not exists');
+    }
 
 	const addressAlreadyExists = await addressesRepository.findOneBy({
 		zipCode: address.zipCode,
@@ -31,12 +38,6 @@ export const createPropertyService = async (
 		throw new AppError(400, 'This address is already registered');
 	}
 
-	const IsCategoryExists = await categoryRepository.findOneBy({
-		id: property.categoryId,
-	});
-	if (!IsCategoryExists) {
-		throw new AppError(404, 'This property category does not exists');
-	}
 
 	const createAddress = addressesRepository.create({
 		district: address.district,
